@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cliente - Tutto Sistema</title>
+
+<style>
+body{
+margin:0;
+background:#000;
+color:#D4AF37;
+font-family:Arial, sans-serif;
+text-align:center;
+}
+
+.logo{
+margin-top:30px;
+}
+
+.logo img{
+width:200px;
+}
+
+.linea{
+height:4px;
+background:#D4AF37;
+margin:25px 0;
+}
+
+button{
+background:#c79c2c;
+border:none;
+padding:15px 25px;
+border-radius:15px;
+font-weight:bold;
+margin:10px;
+cursor:pointer;
+}
+
+.card{
+background:#111;
+margin:10px;
+padding:15px;
+border-radius:15px;
+}
+
+input{
+padding:10px;
+border-radius:10px;
+border:none;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">
+<img src="logo.png">
+<h1>Menú Cliente</h1>
+</div>
+
+<div class="linea"></div>
+
+<div id="secciones"></div>
+<div id="productos" style="display:none;"></div>
+
+<h3>Carrito</h3>
+<p id="lista"></p>
+<p>Total: $<span id="total">0</span></p>
+
+<input type="text" id="mesa" placeholder="Número de mesa">
+<br>
+<button onclick="enviar()">Enviar Pedido</button>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection, addDoc, serverTimestamp }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const seccionesData = {
+  "Pizzas": [
+    {nombre:"Muzzarella", precio:4000},
+    {nombre:"Napolitana", precio:4500},
+    {nombre:"Fugazzeta", precio:4700}
+  ],
+  "Hamburguesas": [
+    {nombre:"Simple", precio:3500},
+    {nombre:"Doble", precio:4200}
+  ],
+  "Bebidas": [
+    {nombre:"Coca Cola", precio:1500},
+    {nombre:"Cerveza", precio:2000}
+  ]
+};
+
+const seccionesDiv = document.getElementById("secciones");
+const productosDiv = document.getElementById("productos");
+
+let carrito = [];
+let total = 0;
+
+function mostrarSecciones(){
+  seccionesDiv.innerHTML="";
+  productosDiv.style.display="none";
+  seccionesDiv.style.display="block";
+
+  for(const nombre in seccionesData){
+    const btn=document.createElement("button");
+    btn.innerText=nombre;
+    btn.onclick=()=>mostrarProductos(nombre);
+    seccionesDiv.appendChild(btn);
+  }
+}
+
+function mostrarProductos(seccion){
+  seccionesDiv.style.display="none";
+  productosDiv.style.display="block";
+  productosDiv.innerHTML=`<h2>${seccion}</h2>`;
+
+  seccionesData[seccion].forEach(prod=>{
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
+      <p>${prod.nombre} - $${prod.precio}</p>
+      <button>Agregar</button>
+    `;
+    div.querySelector("button").onclick=()=>agregar(prod.nombre,prod.precio);
+    productosDiv.appendChild(div);
+  });
+
+  const volver=document.createElement("button");
+  volver.innerText="Volver";
+  volver.onclick=mostrarSecciones;
+  productosDiv.appendChild(volver);
+}
+
+function agregar(nombre,precio){
+  carrito.push(nombre);
+  total+=precio;
+  document.getElementById("lista").innerText=carrito.join(", ");
+  document.getElementById("total").innerText=total;
+}
+
+window.enviar = async function(){
+  const mesa=document.getElementById("mesa").value;
+
+  if(!mesa || carrito.length===0){
+    alert("Completar datos");
+    return;
+  }
+
+  await addDoc(collection(db,"pedidos"),{
+    mesa,
+    items:carrito,
+    total,
+    estado:"pendiente",
+    fecha:serverTimestamp()
+  });
+
+  carrito=[];
+  total=0;
+  document.getElementById("lista").innerText="";
+  document.getElementById("total").innerText="0";
+  alert("Pedido enviado");
+}
+
+mostrarSecciones();
+</script>
+
+</body>
+</html>

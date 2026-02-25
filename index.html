@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutto Sistema</title>
+
+<style>
+body{
+margin:0;
+background:#000;
+font-family:Arial, sans-serif;
+color:#D4AF37;
+}
+
+.logo{
+text-align:center;
+margin-top:40px;
+}
+
+.logo img{
+width:250px;
+}
+
+.logo h1{
+margin-top:15px;
+font-size:28px;
+}
+
+.linea{
+height:4px;
+background:#D4AF37;
+margin:30px 0;
+}
+
+.container{
+padding:20px;
+}
+
+h2{
+font-size:24px;
+margin-bottom:25px;
+}
+
+.botones{
+display:flex;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.botones button{
+background:#c79c2c;
+border:none;
+padding:18px 30px;
+border-radius:18px;
+font-size:18px;
+font-weight:bold;
+color:black;
+cursor:pointer;
+}
+
+.botones button:active{
+transform:scale(0.97);
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">
+<img src="logo.png" alt="Toto Bar">
+<h1>Tutto Sistema</h1>
+</div>
+
+<div class="linea"></div>
+
+<div class="container">
+<h2>Seleccionar modo</h2>
+
+<div class="botones">
+<button onclick="ir('cliente.html')">Cliente</button>
+<button onclick="ir('mozo.html')">Mozo</button>
+<button onclick="ir('cocina.html')">Cocina</button>
+<button onclick="ir('admin.html')">Admin</button>
+<button onclick="ir('dueno.html')">Dueño</button>
+</div>
+
+</div>
+
+<script>
+function ir(pagina){
+let clave = prompt("Ingrese contraseña:");
+
+if(pagina==="admin.html" && clave!=="toto321") return alert("Incorrecta");
+if(pagina==="dueno.html" && clave!=="toto321") return alert("Incorrecta");
+if(pagina==="cocina.html" && clave!=="cocina2026") return alert("Incorrecta");
+if(pagina==="mozo.html" && clave!=="mozo2026") return alert("Incorrecta");
+
+window.location.href = pagina;
+}
+</script>
+
+</body>
+</html>

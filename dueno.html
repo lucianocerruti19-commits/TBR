@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dueño - Tutto Sistema</title>
+
+<style>
+body{
+margin:0;
+background:#000;
+font-family:Arial, sans-serif;
+color:#D4AF37;
+text-align:center;
+}
+
+.logo{
+margin-top:40px;
+}
+
+.logo img{
+width:220px;
+}
+
+.linea{
+height:4px;
+background:#D4AF37;
+margin:30px 0;
+}
+
+.card{
+background:#111;
+margin:20px;
+padding:30px;
+border-radius:20px;
+}
+
+h1{
+font-size:28px;
+}
+
+.numero{
+font-size:40px;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="logo">
+<img src="logo.png">
+<h1>Panel Dueño</h1>
+</div>
+
+<div class="linea"></div>
+
+<div class="card">
+<h2>Total Facturado</h2>
+<div class="numero" id="total">$0</div>
+</div>
+
+<div class="card">
+<h2>Pedidos Cobrados</h2>
+<div class="numero" id="cantidad">0</div>
+</div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { collection,onSnapshot }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const totalDiv = document.getElementById("total");
+const cantidadDiv = document.getElementById("cantidad");
+
+onSnapshot(collection(db,"pedidos"),snap=>{
+  let total=0;
+  let cantidad=0;
+
+  snap.forEach(d=>{
+    const data=d.data();
+    if(data.estado==="cobrado"){
+      total+=data.total;
+      cantidad++;
+    }
+  });
+
+  totalDiv.innerText="$"+total;
+  cantidadDiv.innerText=cantidad;
+});
+</script>
+
+</body>
+</html>

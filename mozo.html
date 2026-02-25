@@ -1,0 +1,26 @@
+<script type="module">
+import { db } from "./firebase.js";
+import { collection,onSnapshot,doc,updateDoc }
+from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+const div=document.getElementById("mesas");
+
+onSnapshot(collection(db,"pedidos"),snap=>{
+  div.innerHTML="";
+  snap.forEach(d=>{
+    const data=d.data();
+    if(data.estado==="listo"){
+      div.innerHTML+=`
+      <div class="card">
+        <h2>${data.mesa}</h2>
+        <h3>Total: $${data.total}</h3>
+        <button onclick="cobrar('${d.id}')">Cobrar</button>
+      </div>`;
+    }
+  });
+});
+
+window.cobrar=async(id)=>{
+  await updateDoc(doc(db,"pedidos",id),{estado:"cobrado"});
+}
+</script>

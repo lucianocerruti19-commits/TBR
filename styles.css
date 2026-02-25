@@ -1,0 +1,77 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #000;
+  color: #e5c06b;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+.logo {
+  width: 220px;
+  display: block;
+  margin: 30px auto 10px auto;
+}
+
+.titulo {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+hr {
+  border: none;
+  height: 3px;
+  background: #caa23c;
+  margin: 20px 0;
+}
+
+.botones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.boton-dorado {
+  background: linear-gradient(145deg, #d4af37, #b8902e);
+  border: none;
+  border-radius: 20px;
+  padding: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+}
+
+.card {
+  background: #111;
+  border-radius: 20px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 15px;
+  border: none;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+.mesa-box{
+  margin:20px;
+}
+
+.mesa-box select{
+  width:100%;
+  padding:15px;
+  font-size:18px;
+  border-radius:12px;
+  border:none;
+}
